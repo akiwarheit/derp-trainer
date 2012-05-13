@@ -36,7 +36,8 @@ import de.pribluda.android.jsonmarshaller.JSONMarshaller;
 public class Trainer {
     // constant defining possible character set - only those characters woll be trained
     // and recognized later
-    public static final String POSSIBLE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ8th0e9quickbr1235own4"; 
+    public static final String POSSIBLE = "ABC"; 
+    public static final String DIRECTORY = "/home/kevin/ocrsamples/dats";
     private static final String TAB = "\t";
     
 //    String[] args = {"/home/kevin/ocrsamples/"};
@@ -49,10 +50,11 @@ public class Trainer {
 //            System.err.println("please specify directory containing sample data");
 //            return;
 //        }
-        String directory = "/home/kevin/ocrsamples/dats";
-        File samples = new File(directory);
+//        String directory = "/home/kevin/ocrsamples/dats";
+        File samples = new File(DIRECTORY);
         if (!samples.exists() || !samples.isDirectory()) {
-            System.err.println(args[0] + "must be directory");
+//            System.err.println(args[0] + "must be directory");
+            System.err.println(DIRECTORY + "must be directory");
             return;
         }
 
