@@ -1,3 +1,4 @@
+import java.awt.Image;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,18 +11,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import net.sourceforge.javaocr.Image;
-import net.sourceforge.javaocr.cluster.FeatureExtractor;
-import net.sourceforge.javaocr.matcher.FreeSpacesMatcher;
-import net.sourceforge.javaocr.matcher.Match;
-import net.sourceforge.javaocr.matcher.MatcherUtil;
-import net.sourceforge.javaocr.matcher.MetricContainer;
-import net.sourceforge.javaocr.matcher.MetricMatcher;
-import net.sourceforge.javaocr.ocr.PixelImage;
-import net.sourceforge.javaocr.plugin.cluster.MahalanobisDistanceCluster;
-import net.sourceforge.javaocr.plugin.cluster.extractor.FreeSpacesExtractor;
-import net.sourceforge.javaocr.plugin.moment.HuMoments;
 
 import com.google.gson.stream.JsonWriter;
 
@@ -36,22 +25,18 @@ import de.pribluda.android.jsonmarshaller.JSONMarshaller;
 public class Trainer {
     // constant defining possible character set - only those characters woll be trained
     // and recognized later
-    private static final String DIRECTORY = "/home/kevin/ocrsamples/dats";
+    private static final String DAT_SOURCE_DIR = "/home/kevin/ocrsamples/dats";
+    private static final String FREESPACES_OUTPUT = "/home/kevin/ocrsamples/output/freespaces.json";
+    private static final String MOMENTS_OUTPUT = "/home/kevin/ocrsamples/output/moments.json";
     public static final String POSSIBLE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ8th0e9quickbr1235own4"; 
-    private static final String TAB = "\t";
     
-//    String[] args = {"/home/kevin/ocrsamples/"};
+    private static final String TAB = "\t";
 
     /**
      * @param args args[0] contains directory witj sample files
      */
     public static void main(String[] args) throws IOException, InvocationTargetException, NoSuchMethodException, IllegalAccessException {
-//        if (args.length < 1) {
-//            System.err.println("please specify directory containing sample data");
-//            return;
-//        }
-//        String directory = "/home/kevin/ocrsamples/dats";
-        File samples = new File(DIRECTORY);
+        File samples = new File(DAT_SOURCE_DIR);
         if (!samples.exists() || !samples.isDirectory()) {
             System.err.println(args[0] + "must be directory");
             return;
@@ -208,14 +193,14 @@ public class Trainer {
         // TODO:  maybe this logic belongs into matcher.
 
 //        writeJsonArray(freeSpacesMatcher.getContainers());
-        writeJsonFile(freeSpacesMatcher.getContainers(),"/home/kevin/ocrsamples/output/freespaces.json");
+        writeJsonFile(freeSpacesMatcher.getContainers(), FREESPACES_OUTPUT);
 
         System.out.println("----------------[ free ends ]-----------------");
 
         System.out.println("----------[ cluster data ]----------------");
 
         final List<MetricContainer> metricContainerList = metricMatcher.containers();
-        writeJsonFile(metricContainerList,"/home/kevin/ocrsamples/output/moments.json");
+        writeJsonFile(metricContainerList, MOMENTS_OUTPUT);
 //        writeJsonArray(metricContainerList);
 
         System.out.println("----------------------------------------");
